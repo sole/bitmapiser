@@ -1,0 +1,18 @@
+{
+  "name": "bitmapise",
+  "version": "0.0.1",
+  "description": "from vector to bitmaps",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js"
+  },
+  "author": "Soledad Penades / sole",
+  "license": "MPL",
+  "dependencies": {
+    "shelljs": "^0.3.0",
+    "argparse": "^0.1.15",
+    "printf": "^0.2.0",
+    "temp": "^0.7.0"
+  }
+}
