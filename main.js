@@ -7,14 +7,16 @@ var sizes = '16,48,60,128';
 
 
 parser = new ArgumentParser({
-	description: 'Build different icon versions'
+  description: 'Build different icon versions',
+  addHelp: true
 });
 
 
 parser.addArgument( ['--images'], {
-		help: 'Comma separated list of images to be converted',
-		defaultValue: ''
-	}
+    help: 'Comma separated list of images to be converted',
+    defaultValue: '',
+    required: true
+  }
 );
 
 parser.addArgument( ['--input-dir'], {
