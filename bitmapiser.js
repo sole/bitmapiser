@@ -3,6 +3,7 @@ var path = require('path');
 var printf = require('printf');
 var temp = require('temp');
 var fs = require('fs');
+var gm = require('gm');
 
 function Bitmapiser(options) {
 
@@ -27,10 +28,7 @@ function Bitmapiser(options) {
     var child = shell.exec( inkscapeCmd );
     console.log(child); // XXX
 
-    // Then resize down
-    // Load image into bitmap? image?
-
-    // Repeatedly copy and resize for each size
+    // Repeatedly resize for each size
     sizes.forEach(function(size) {
       
       var width, height;
@@ -55,6 +53,14 @@ function Bitmapiser(options) {
       var resizedPath = path.join(outputDir, resizedFileName);
 
       console.log(resizedPath);
+
+      gm(tmpPath)
+        .resize(width, height)
+        //.noProfile()
+        .write(resizedPath, function (err) {
+          if (!err) console.log('done', resizedPath);
+          else console.log(err);
+        });
 
     });
 
