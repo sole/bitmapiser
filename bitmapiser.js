@@ -4,17 +4,20 @@ var printf = require('printf');
 var temp = require('temp');
 var fs = require('fs');
 var gm = require('gm');
+var Promise = require('es6-promise').Promise;
+
 
 function Bitmapiser(options) {
 
   var inkscapePath = '/Applications/Inkscape.app/Contents/Resources/bin/inkscape'; // TODO XXX hardcoded
 
-  function processImage(image, inputDir, outputDir, sizes) {
+  function processImage(image, inputDir, outputDir, sizes, doneCallback) {
 
     var srcPath = path.join(inputDir, image);
     var baseName = path.basename(srcPath);
     var fileName = path.basename(baseName, path.extname(baseName));
-    var tmpPath = path.join(fs.realpathSync( outputDir ), 'test.png'); // temp.path();
+    var tmpPath = temp.path();
+    var conversionsQueue = [];
 
     srcPath = fs.realpathSync( srcPath );
 
@@ -23,10 +26,8 @@ function Bitmapiser(options) {
     // First generate bitmap version from vectorial
     inkscapeCmd = printf('%s %s --export-png=%s --export-area-drawing', inkscapePath, srcPath, tmpPath);
 
-    console.log(inkscapeCmd);
-    
     var child = shell.exec( inkscapeCmd );
-    console.log(child); // XXX
+
 
     // Repeatedly resize for each size
     sizes.forEach(function(size) {
@@ -52,22 +53,49 @@ function Bitmapiser(options) {
       var resizedFileName = printf('%s%dx%d.png', fileName, width, height);
       var resizedPath = path.join(outputDir, resizedFileName);
 
-      console.log(resizedPath);
+      var conversion = new Promise(function(resolve, reject) {
 
-      gm(tmpPath)
-        .resize(width, height)
-        //.noProfile()
-        .write(resizedPath, function (err) {
-          if (!err) console.log('done', resizedPath);
-          else console.log(err);
-        });
+        gm(tmpPath)
+          .resize(width, height)
+          .write(resizedPath, function (err) {
+            if (!err) {
+              console.log('done ' + resizedPath);
+              resolve('done ' + resizedPath);
+            } else {
+              reject(err);
+            }
+          });
+      });
 
+      conversionsQueue.push( conversion );
+
+    });
+
+    var whenDone = cleanup(tmpPath);
+
+    Promise.all( conversionsQueue ).then(function() {
+      console.log('ALL IS COOL');
+      whenDone();
+    }, function(err) {
+      console.log('finished, but NOT ALL is cool');
+      console.log(err);
+      whenDone();
     });
 
   }
 
+
+  function cleanup(tmpImagePath) {
+    return function() {
+      // ABC Always Be Cleaning
+      console.log('cleanup');
+      fs.unlinkSync(tmpImagePath);
+    };
+  }
+
+
   this.run = function() {
-    
+
     options.images.forEach(function(image) {
       processImage( image, options.inputDir, options.outputDir, options.sizes );
     });
