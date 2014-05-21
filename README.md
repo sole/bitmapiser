@@ -4,26 +4,15 @@ _Because why generate bitmaps from vectors by hand when you could be automating 
 
 ## Installing
 
-This is a special project, it has dependencies that you have to satisfy manually. I'm sad about that and I wish it was different, but so far it isn't, so we have to DEAL WITH IT, and install...
-
-* inkscape
-* imagemagick
-* graphicsmagick
+This is a special project, it has dependencies that you have to satisfy manually. I'm sad about that and I wish it was different, but so far it isn't, so we have to DEAL WITH IT, and install **Inkscape**.
 
 ### In Mac
 
-Installing this kind of things is probably super easy in any Linux distribution, but in Mac it is a hassle and HURTS, so here's how I did that. 
+Installing this kind of things is super easy in any Linux distribution, but in Mac it is a hassle and HURTS, so here's how I did that. 
 
-You can get an Inkscape binary from their website.
+You can get an Inkscape binary from their website. But you'll need to install something called XQuartz too which is an X11 replacement.
 
-I installed the *magick using `brew` (which I had installed beforehand).
-
-```bash
-brew install imagemagick
-brew install graphicsmagick
-```
-
-It actually gave me a bit of trouble because of some incompatible freetype versions, which I fixed by...
+Running Inkscape actually gave me a bit of trouble because of some incompatible freetype versions, which I fixed by...
 
 ```bash
 brew uninstall freetype
@@ -31,6 +20,8 @@ brew update
 brew install freetype
 brew link --force freetype
 ```
+
+(you need to install `brew` first--brew is a package manager because Mac doesn't have one).
 
 Finally now that you have your dependencies satisfied:
 

@@ -12,9 +12,6 @@
   "dependencies": {
     "shelljs": "^0.3.0",
     "argparse": "^0.1.15",
-    "printf": "^0.2.0",
-    "temp": "^0.7.0",
-    "gm": "^1.16.0",
-    "es6-promise": "^1.0.0"
+    "printf": "^0.2.0"
   }
 }
