@@ -9,7 +9,7 @@ var Promise = require('es6-promise').Promise;
 
 function Bitmapiser(options) {
 
-  var inkscapePath = '/Applications/Inkscape.app/Contents/Resources/bin/inkscape'; // TODO XXX hardcoded
+  var inkscapePath = options.inkscapePath;
 
   function processImage(image, inputDir, outputDir, sizes, doneCallback) {
 

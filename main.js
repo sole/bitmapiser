@@ -4,6 +4,7 @@ var Bitmapiser = require('./bitmapiser.js');
 var inputDir = process.cwd();
 var outputDir = inputDir;
 var sizes = '16,48,60,128';
+var inkscapePath = 'inkscape';
 
 
 parser = new ArgumentParser({
@@ -40,8 +41,15 @@ parser.addArgument( ['--sizes' ], {
 }
 );
 
-var args = parser.parseArgs();
+parser.addArgument( ['--inkscapePath' ], {
+    dest: 'inkscapePath',
+    help: 'Path to the Inkscape binary', 
+    defaultValue: inkscapePath
+  }
+);
 
+
+var args = parser.parseArgs();
 
 if(args.images.length > 0) {
   args.images = args.images.split(',');
